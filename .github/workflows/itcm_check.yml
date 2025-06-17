@@ -15,7 +15,6 @@ on:
       - '**'
     paths-ignore:
       - 'docs/**'
-      - '.github/**'
 
 jobs:
   check_itcm:

@@ -15,7 +15,6 @@ on:
       - '**'
     paths-ignore:
       - 'docs/**'
-      - '.github/**'
 
 env:
   RUNS_IN_DOCKER: true
