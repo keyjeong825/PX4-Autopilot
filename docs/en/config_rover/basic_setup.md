@@ -1,27 +1,27 @@
 # Basic Setup
 
-To configure the rover frame and outputs:
+## Configure the rover frame and outputs:
 
-1. Enable Rover support by flashing the [PX4 rover build](../config_rover/index.md#flashing-the-rover-build) onto your flight controller.
-   Note that this is a special build that contains rover-specific modules.
+   1. Enable Rover support by flashing the [PX4 rover build](../config_rover/index.md#flashing-the-rover-build) onto your flight controller.
+      Note that this is a special build that contains rover-specific modules.
 
-2. In the [Airframe](../config/airframe.md) configuration select the your rover type: _Generic Rover Ackermann_/_Generic Rover Differential_/_Generic Rover Mecanum_:
+   2. In the [Airframe](../config/airframe.md) configuration select the your rover type: _Generic Rover Ackermann_/_Generic Rover Differential_/_Generic Rover Mecanum_:
 
-   ![QGC screenshot showing selection of the airframe 'Generic ackermann rover'](../../assets/config/airframe/airframe_generic_rover_ackermann.png)
+      ![QGC screenshot showing selection of the airframe 'Generic ackermann rover'](../../assets/config/airframe/airframe_generic_rover_ackermann.png)
 
-   Select the **Apply and Restart** button.
+      Select the **Apply and Restart** button.
 
-   ::: info
-   If this airframe is not displayed and you have checked that you are using rover firmware (not the default), you can alternatively enable this frame by setting the [SYS_AUTOSTART](../advanced_config/parameter_reference.md#SYS_AUTOSTART) parameter directly to the following value:
+      ::: info
+      If this airframe is not displayed and you have checked that you are using rover firmware (not the default), you can alternatively enable this frame by setting the [SYS_AUTOSTART](../advanced_config/parameter_reference.md#SYS_AUTOSTART) parameter directly to the following value:
 
-   | Rover Type   | Value   |
-   | ------------ | ------- |
-   | Ackermann    | `51000` |
-   | Differential | `50000` |
-   | Mecanum      | `52000` |
-   :::
+      | Rover Type   | Value   |
+      | ------------ | ------- |
+      | Ackermann    | `51000` |
+      | Differential | `50000` |
+      | Mecanum      | `52000` |
+      :::
 
-3. Open the [Actuators Configuration & Testing](../config/actuators.md) to map the motor/servo functions to flight controller outputs.
+   3. Open the [Actuators Configuration & Testing](../config/actuators.md) to map the motor/servo functions to flight controller outputs.
 
 This already covers the minimum setup required to use the rover in [Manual mode](../flight_modes_rover/manual.md#manual-mode).
 
@@ -30,10 +30,22 @@ As configuration of these limits becomes mandatory later, we do this setup here.
 
 Navigate to [Parameters](../advanced_config/parameters.md) in QGroundControl and set the following parameters:
 
+## Geometric Paramters
+The geometric parameters are dependant on your rover type:
+
+![Geometric parameters](../../assets/config/rover/geometric_parameters.png)
+
+### Ackermann
 1. [RA_WHEEL_BASE](#RA_WHEEL_BASE) [m]: Measure the distance from the back to the front wheels.
 2. [RA_MAX_STR_ANG](#RA_MAX_STR_ANG) [deg]: Measure the maximum steering angle.
 
-   ![Geometric parameters](../../assets/airframes/rover/rover_ackermann/geometric_parameters.png)
+### Differential
+1. [RD_WHEEL_TRACK](#RD_WHEEL_TRACK) [m]: Measure the distance from the centre of the right wheel to the centre of the left wheel.
+
+### Mecanum
+1. [RM_WHEEL_TRACK](#RM_WHEEL_TRACK) [m]: Measure the distance from the centre of the right wheel to the centre of the left wheel.
+
+## Further Paramters
 
 3. [RO_MAX_THR_SPEED](#RO_MAX_THR_SPEED) [m/s]: Drive the rover at full throttle and set this parameter to the observed value of the ground speed.
 
@@ -53,15 +65,15 @@ Navigate to [Parameters](../advanced_config/parameters.md) in QGroundControl and
    One approach to determine an appropriate value is:
 
    1. From a standstill, give the rover full throttle until it reaches the maximum speed.
-   1. Disarm the rover and plot the `measured_speed_body_x` from [RoverVelocityStatus](../msg_docs/RoverVelocityStatus.md).
-   1. Divide the maximum speed by the time it took to reach it and set this as the value for [RO_ACCEL_LIM](#RO_ACCEL_LIM).
+   2. Disarm the rover and plot the `measured_speed_body_x` from [RoverVelocityStatus](../msg_docs/RoverVelocityStatus.md).
+   3. Divide the maximum speed by the time it took to reach it and set this as the value for [RO_ACCEL_LIM](#RO_ACCEL_LIM).
 
    Some RC rovers have enough torque to lift up if the maximum acceleration is not limited.
    If that is the case:
 
-   1. Set [RO_ACCEL_LIM](#RO_ACCEL_LIM) to a low value, give the rover full throttle from a standstill and observe its behaviour.
-   1. Increase [RO_ACCEL_LIM](#RO_ACCEL_LIM) until the rover starts to lift up during the acceleration.
-   1. Set [RO_ACCEL_LIM](#RO_ACCEL_LIM) to the highest value that does not cause the rover to lift up.
+   4. Set [RO_ACCEL_LIM](#RO_ACCEL_LIM) to a low value, give the rover full throttle from a standstill and observe its behaviour.
+   5. Increase [RO_ACCEL_LIM](#RO_ACCEL_LIM) until the rover starts to lift up during the acceleration.
+   6. Set [RO_ACCEL_LIM](#RO_ACCEL_LIM) to the highest value that does not cause the rover to lift up.
       :::
 
 5. (Optional) [RO_DECEL_LIM](#RO_DECEL_LIM) [m/s^2]: Maximum deceleration you want to allow for your rover.

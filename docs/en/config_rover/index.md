@@ -13,7 +13,7 @@ Successive steps enable [drive modes](../flight_modes_rover/index.md) with more 
 
 ::: warning
 Each step is dependent on the previous steps having been completed.
-Modes will only work properly if the preceding modes have been configured.
+Drive modes will only work properly if the preceding modes have been unlocked.
 :::
 
 ## Flashing the Rover Build
