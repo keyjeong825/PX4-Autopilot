@@ -1,4 +1,4 @@
-# Drive Modes (Rover)
+# Drive Modes
 
 Flight modes (or more accurately "Drive modes" for ground vehicles) provide autopilot support to make it easier to manually drive the vehicle or to execute autonomous missions.
 

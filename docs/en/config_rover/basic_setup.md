@@ -1,0 +1,89 @@
+# Basic Setup
+
+To configure the rover frame and outputs:
+
+1. Enable Rover support by flashing the [PX4 rover build](../config_rover/index.md#flashing-the-rover-build) onto your flight controller.
+   Note that this is a special build that contains rover-specific modules.
+
+2. In the [Airframe](../config/airframe.md) configuration select the your rover type: _Generic Rover Ackermann_/_Generic Rover Differential_/_Generic Rover Mecanum_:
+
+   ![QGC screenshot showing selection of the airframe 'Generic ackermann rover'](../../assets/config/airframe/airframe_generic_rover_ackermann.png)
+
+   Select the **Apply and Restart** button.
+
+   ::: info
+   If this airframe is not displayed and you have checked that you are using rover firmware (not the default), you can alternatively enable this frame by setting the [SYS_AUTOSTART](../advanced_config/parameter_reference.md#SYS_AUTOSTART) parameter directly to the following value:
+
+   | Rover Type   | Value   |
+   | ------------ | ------- |
+   | Ackermann    | `51000` |
+   | Differential | `50000` |
+   | Mecanum      | `52000` |
+   :::
+
+3. Open the [Actuators Configuration & Testing](../config/actuators.md) to map the motor/servo functions to flight controller outputs.
+
+This already covers the minimum setup required to use the rover in [Manual mode](../flight_modes_rover/manual.md#manual-mode).
+
+This mode is also affected by (optional) acceleration/deceleration limits.
+As configuration of these limits becomes mandatory later, we do this setup here.
+
+Navigate to [Parameters](../advanced_config/parameters.md) in QGroundControl and set the following parameters:
+
+1. [RA_WHEEL_BASE](#RA_WHEEL_BASE) [m]: Measure the distance from the back to the front wheels.
+2. [RA_MAX_STR_ANG](#RA_MAX_STR_ANG) [deg]: Measure the maximum steering angle.
+
+   ![Geometric parameters](../../assets/airframes/rover/rover_ackermann/geometric_parameters.png)
+
+3. [RO_MAX_THR_SPEED](#RO_MAX_THR_SPEED) [m/s]: Drive the rover at full throttle and set this parameter to the observed value of the ground speed.
+
+   :::info
+   This parameter is also used for the feed-forward term of the speed control.
+   It will be further tuned in the configuration of [Position mode](#position-mode).
+   :::
+
+4. (Optional) [RO_ACCEL_LIM](#RO_ACCEL_LIM) [m/s^2]: Maximum acceleration you want to allow for your rover.
+
+   <a id="RO_ACCEL_LIM_CONSIDERATIONS"></a>
+
+   :::tip
+   Your rover has a maximum possible acceleration which is determined by the maximum torque the motor can supply.
+   This may or may not be appropriate for your vehicle and use case.
+
+   One approach to determine an appropriate value is:
+
+   1. From a standstill, give the rover full throttle until it reaches the maximum speed.
+   1. Disarm the rover and plot the `measured_speed_body_x` from [RoverVelocityStatus](../msg_docs/RoverVelocityStatus.md).
+   1. Divide the maximum speed by the time it took to reach it and set this as the value for [RO_ACCEL_LIM](#RO_ACCEL_LIM).
+
+   Some RC rovers have enough torque to lift up if the maximum acceleration is not limited.
+   If that is the case:
+
+   1. Set [RO_ACCEL_LIM](#RO_ACCEL_LIM) to a low value, give the rover full throttle from a standstill and observe its behaviour.
+   1. Increase [RO_ACCEL_LIM](#RO_ACCEL_LIM) until the rover starts to lift up during the acceleration.
+   1. Set [RO_ACCEL_LIM](#RO_ACCEL_LIM) to the highest value that does not cause the rover to lift up.
+      :::
+
+5. (Optional) [RO_DECEL_LIM](#RO_DECEL_LIM) [m/s^2]: Maximum deceleration you want to allow for your rover.
+
+   :::tip
+   The same [considerations](#RO_ACCEL_LIM_CONSIDERATIONS) as in the configuration of [RO_ACCEL_LIM](#RO_ACCEL_LIM) apply.
+   :::
+
+   :::info
+   This parameter is also used for the calculation of the speed setpoint during [Auto modes](#auto-modes).
+   :::
+
+6. (Optional) [RA_STR_RATE_LIM](#RA_STR_RATE_LIM) [deg/s]: Maximum steering rate you want to allow for your rover.
+
+   :::tip
+   This value depends on your rover and use case.
+   For bigger rovers there might be a mechanical limit that is easy to identify by steering the rover at a standstill and increasing
+   [RA_STR_RATE_LIM](#RA_STR_RATE_LIM) until you observe the steering rate to no longer be limited by the parameter.
+   For smaller rovers you might observe the steering to be too aggressive. Set [RA_STR_RATE_LIM](#RA_STR_RATE_LIM) to a low value and steer the rover at a standstill.
+   Increase the parameter until you reach the maximum steering rate you are comfortable with.
+   :::
+
+   :::warning
+   A low maximum steering rate makes the rover worse at tracking steering setpoints, which can lead to a poor performance in the subsequent modes.
+   :::
