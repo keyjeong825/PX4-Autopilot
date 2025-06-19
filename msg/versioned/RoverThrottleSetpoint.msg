@@ -1,7 +1,7 @@
-# Rover Throttle setpoint
+# Rover throttle setpoint
 
 uint32 MESSAGE_VERSION = 0
 
-uint64  timestamp       # Time since system start [us]
-float32 throttle_body_x # Throttle setpoint along body X axis [] [@range -1 (Backwards), 1 (Forwards)] [@frame Body]
-float32 throttle_body_y # Mecanum only: Throttle setpoint along body Y axis [] [@range -1 (Left), 1 (Right)] [@frame Body] [@invalid NaN If not mecanum]
+uint64 timestamp # [us] Time since system start
+float32 throttle_body_x # [] [@range -1 (Backwards), 1 (Forwards)] [@frame Body] Throttle setpoint along body X axis
+float32 throttle_body_y # [] [@range -1 (Left), 1 (Right)] [@frame Body] [@invalid NaN If not mecanum] Mecanum only: Throttle setpoint along body Y axis

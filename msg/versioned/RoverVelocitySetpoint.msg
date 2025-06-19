@@ -1,8 +1,8 @@
-# Rover Velocity Setpoint
+# Rover velocity setpoint
 
 uint32 MESSAGE_VERSION = 0
 
-uint64  timestamp # Time since system start [us]
-float32 speed     # Speed setpoint [m/s] [@range -inf (Backwards), inf (Forwards)]
-float32 bearing   # Bearing setpoint [rad] [@range -pi,pi] [@frame NED] [invalid: NAN, speed is defined in body x direction]
-float32 yaw 	  # Mecanum only: Yaw setpoint [rad] [@range -pi, pi] [@frame NED] [@invalid NAN, Defaults to vehicle yaw]
+uint64 timestamp # [us] Time since system start
+float32 speed # [m/s] [@range -inf (Backwards), inf (Forwards)] Speed setpoint
+float32 bearing # [rad] [@range -pi,pi] [@frame NED] [invalid: NAN, speed is defined in body x direction] Bearing setpoint
+float32 yaw # [rad] [@range -pi, pi] [@frame NED] [@invalid NAN, Defaults to vehicle yaw] Mecanum only: Yaw setpoint

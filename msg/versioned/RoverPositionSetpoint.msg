@@ -1,10 +1,10 @@
-# Rover Position Setpoint
+# Rover position setpoint
 
 uint32 MESSAGE_VERSION = 0
 
-uint64     timestamp      # Time since system start [us]
-float32[2] position_ned   # Target position [m] [@range -inf, inf] [@frame NED]
-float32[2] start_ned	  # Start position which specifies a line for the rover to track [m] [@range -inf, inf] [@frame NED] [@invalid NaN Defaults to vehicle position]
-float32    cruising_speed # Cruising speed [m/s] [@range 0, inf] [@invalid NaN Defaults to maximum speed]
-float32    arrival_speed  # Speed the rover should arrive at the target with [m/s] [@range 0, inf] [@invalid NaN Defaults to 0]
-float32    yaw            # Mecanum only: Specify vehicle yaw during travel [rad] [@range -pi,pi] [@frame NED] [@invalid NaN Defaults to vehicle yaw]
+uint64 timestamp # [us] Time since system start
+float32[2] position_ned # [m] [@range -inf, inf] [@frame NED] Target position
+float32[2] start_ned # [m] [@range -inf, inf] [@frame NED] [@invalid NaN Defaults to vehicle position] Start position which specifies a line for the rover to track
+float32 cruising_speed # [m/s] [@range 0, inf] [@invalid NaN Defaults to maximum speed] Cruising speed
+float32 arrival_speed # [m/s] [@range 0, inf] [@invalid NaN Defaults to 0] Speed the rover should arrive at the target with
+float32 yaw # [rad] [@range -pi,pi] [@frame NED] [@invalid NaN Defaults to vehicle yaw] Mecanum only: Specify vehicle yaw during travel
